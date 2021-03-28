@@ -1,7 +1,7 @@
-# Change to correct subreddit
-# Set up Heroku
 # Set up venv
-# Choose settings for polls
+# Set up Heroku
+# Do more testing
+# Change to correct subreddit
 
 import praw
 import requests
@@ -43,7 +43,8 @@ def make_poll(choices):
         'poll': {
             'title': 'Fantasy Baseball Poll',
             'answers': choices,
-            'priv': false
+            'priv': false,
+            'co': false
         }   
     }
     poll = requests.post('https://strawpoll.com/api/poll', json=data, headers={'API-KEY': api_key}).json()
