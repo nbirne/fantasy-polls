@@ -80,5 +80,5 @@ def make_poll(choices):
 
 if __name__ == "__main__":
     # main()
-    text = 'Hey, here\'s a question: !fantasypoll <Juan Soto,Ronald Acuna,David Ortiz> More text'
+    text = 'Hey, here\'s a question: !fantasypoll Juan Soto,Ronald Acuna, David Ortiz'
     print(get_choices(text))
