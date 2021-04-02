@@ -1,8 +1,11 @@
-# Set up venv
-# Set up Heroku
 # Do more testing
+# Decide whether to use <>
+# Merge into main branch
+# Set up Heroku
 
 # Change to correct subreddit
+# Link to correct account
+# Add a bio
 # Make polls public
 
 import praw
@@ -45,12 +48,22 @@ def main():
 
 # Isolate just the choices, which are found after the bot is called
 def get_choices(text):
-    start = text.lower().find(TRIGGER) + len(TRIGGER) + 1
-    stop = text.find('\n', start)
-    if stop == -1:
-        stop = None
+    # Extract the substring with the choices
+    trigger_loc = text.lower().find(TRIGGER)
+    if '<' in text[trigger_loc:] and '>' in text[trigger_loc:]:
+        start = text.find('<', trigger_loc) + 1
+        stop = text.find('>', trigger_loc)
+    else:
+        start = trigger_loc + len(TRIGGER) + 1
+        stop = text.find('\n', start)
+        if stop == -1:
+            stop = None
     text = text[start:stop]
-    poll_choices = text.split(', ')
+
+    # Turn the choices into a list - split on ',' instead of ', ' in case users forget spaces
+    choices = text.split(',')
+    poll_choices = [choice.strip() for choice in choices]
+    
     return poll_choices
 
 def make_poll(choices):
@@ -58,7 +71,7 @@ def make_poll(choices):
         'poll': {
             'title': 'Fantasy Baseball Poll',
             'answers': choices,
-            # 'priv': False,
+            'priv': False,
             'co': False
         }   
     }
@@ -66,4 +79,6 @@ def make_poll(choices):
     return 'https://strawpoll.com/' + poll['content_id']
 
 if __name__ == "__main__":
-    main()
+    # main()
+    text = 'Hey, here\'s a question: !fantasypoll <Juan Soto,Ronald Acuna,David Ortiz> More text'
+    print(get_choices(text))
